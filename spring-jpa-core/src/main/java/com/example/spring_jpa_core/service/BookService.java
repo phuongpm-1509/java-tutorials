@@ -18,7 +18,7 @@ public class BookService {
 
     public List<Book> getAllBooks(String title) {
         if (title != null && !title.trim().isEmpty()) {
-           return bookRepository.findByNameContainingIgnoreCase(title);
+           return bookRepository.findByTitleContainingIgnoreCase(title);
         }
         return bookRepository.findAll();
     }

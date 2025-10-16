@@ -1,0 +1,71 @@
+# Default config
+spring:
+    application:
+        name: spring-jpa-core
+    profiles:
+        active: dev
+
+server:
+    port: 8080
+    servlet:
+        context-path: /api
+
+logging:
+    level:
+        root: INFO
+        "[com.example]": DEBUG
+    pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file:
+        name: spring-jpa-core/logs/logging.log
+
+---
+# Local config
+
+spring:
+    config:
+        activate:
+            on-profile: dev
+
+    datasource:
+        url: jdbc:h2:mem:bookdb
+        driverClassName: org.h2.Driver
+        username: sa
+        password:
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+    h2:
+        console:
+            enabled: true
+
+web:
+  url: http://localhost:8080
+
+---
+# Production config
+
+spring:
+    config:
+        activate:
+            on-profile: prod
+
+    datasource:
+        url: jdbc:h2:mem:bookdb
+        driverClassName: org.h2.Driver
+        username: sa
+        password:
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+    h2:
+        console:
+            enabled: true
+web:
+  url: https://myapp.production.com
