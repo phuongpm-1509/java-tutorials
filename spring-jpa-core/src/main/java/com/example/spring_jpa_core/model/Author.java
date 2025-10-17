@@ -1,6 +1,8 @@
 package com.example.spring_jpa_core.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -10,6 +12,8 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, message = "Name must be less than or equal to 100 characters")
     @Column(name = "name", nullable = false)
     private String name;
 

@@ -4,16 +4,17 @@ spring:
         name: spring-jpa-core
     profiles:
         active: dev
+    devtools:
+        restart:
+            enabled: true
 
 server:
     port: 8080
-    servlet:
-        context-path: /api
 
 logging:
     level:
         root: INFO
-        "[com.example]": DEBUG
+        "[com.example.spring_jpa_core]": DEBUG
     pattern:
         console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file:
