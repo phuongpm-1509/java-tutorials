@@ -1,39 +1,66 @@
 package com.example.employeemanagement.employee_management_system.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.example.employeemanagement.employee_management_system.dto.employee.CreateEmployeeDTO;
+import com.example.employeemanagement.employee_management_system.model.Department;
 import com.example.employeemanagement.employee_management_system.model.Employee;
-import java.util.concurrent.atomic.AtomicLong;
+import com.example.employeemanagement.employee_management_system.repository.EmployeeRepository;
+import com.example.employeemanagement.employee_management_system.repository.DepartmentRepository;
 
 @Service
 public class EmployeeService {
-  private static final List<Employee> EMPLOYEE_STORE = new ArrayList<>();
-  private static final AtomicLong ID_COUNTER = new AtomicLong(1);
   private final UtilityService utilityService;
+  private final DepartmentRepository departmentRepository;
+  private final EmployeeRepository employeeRepository;
+  private final ModelMapper modelMapper;
 
-  static {
-    EMPLOYEE_STORE.add(new Employee(ID_COUNTER.getAndIncrement(), "Nguyen Van A","Phòng hành chính", "nguyen.van.a@gmail.com" , "EMP-0001"));
-    EMPLOYEE_STORE.add(new Employee(ID_COUNTER.getAndIncrement(), "Nguyen Van B", "Phòng nhân sự", "nguyen.van.b@gmail.com" , "EMP-0002"));
-  }
-
-  public EmployeeService(UtilityService utilityService) {
+  public EmployeeService(UtilityService utilityService, DepartmentRepository departmentRepository, EmployeeRepository employeeRepository, ModelMapper modelMapper) {
       this.utilityService = utilityService;
+      this.departmentRepository = departmentRepository;
+      this.employeeRepository = employeeRepository;
+      this.modelMapper = modelMapper;
   }
 
-  public List<Employee> getAllEmployees() {
-    return EMPLOYEE_STORE;
+  public List<Employee> getAllEmployees(String name, Long departmentId) {
+    return employeeRepository.searchEmployees(name, departmentId);
   }
 
-  public Employee createEmployee(Employee newEmployee) {
-    Long id = ID_COUNTER.getAndIncrement();
+  public Employee getEmployeeById(Long id) {
+    return employeeRepository.findById(id).orElse(null);
+  }
 
-    newEmployee.setId(id);
-    newEmployee.setName(utilityService.capitalizeWords(newEmployee.getName()));
-    newEmployee.setCode(utilityService.generateEmployeeCode("EMP", id));
+  public Employee createEmployee(CreateEmployeeDTO newEmployeeDTO) {
+    Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElse(null);
 
-    EMPLOYEE_STORE.add(newEmployee);
+    Employee employee = modelMapper.map(newEmployeeDTO, Employee.class);
+    employee.setName(utilityService.capitalizeWords(employee.getName()));
+    employee.setDepartment(department);
 
-    return newEmployee;
+    Employee savedEmployee = employeeRepository.save(employee);
+    savedEmployee.setCode(utilityService.generateEmployeeCode("EMP", savedEmployee.getId()));
+
+    return employeeRepository.save(savedEmployee);
+  }
+
+  public Employee updateEmployee(Long id, CreateEmployeeDTO newEmployeeDTO) {
+    Employee existingEmployee = employeeRepository.findById(id).orElse(null);
+    Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElse(null);
+
+    modelMapper.map(newEmployeeDTO, existingEmployee);
+    existingEmployee.setName(utilityService.capitalizeWords(newEmployeeDTO.getName()));
+    existingEmployee.setDepartment(department);
+
+    return employeeRepository.save(existingEmployee);
+  }
+
+
+  public boolean deleteEmployee(Long id) {
+    Employee employee = getEmployeeById(id);
+
+    employeeRepository.deleteById(employee.getId());
+    return true;
   }
 }
