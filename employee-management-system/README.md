@@ -11,3 +11,9 @@ http://localhost:8080
 ```
 GET    /api/welcome
 ```
+
+3. Employee API
+
+```
+POST   /api/employees
+```
