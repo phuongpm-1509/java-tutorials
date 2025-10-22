@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import com.example.employeemanagement.employee_management_system.dto.employee.CreateEmployeeDTO;
+import com.example.employeemanagement.employee_management_system.exception.ResourceNotFoundException;
 import com.example.employeemanagement.employee_management_system.model.Department;
 import com.example.employeemanagement.employee_management_system.model.Employee;
 import com.example.employeemanagement.employee_management_system.repository.EmployeeRepository;
@@ -29,11 +30,15 @@ public class EmployeeService {
   }
 
   public Employee getEmployeeById(Long id) {
-    return employeeRepository.findById(id).orElse(null);
+    return employeeRepository.findById(id).orElseThrow(
+      () -> new ResourceNotFoundException("Employee not found")
+    );
   }
 
   public Employee createEmployee(CreateEmployeeDTO newEmployeeDTO) {
-    Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElse(null);
+    Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElseThrow(
+      () -> new ResourceNotFoundException("Department not found")
+    );
 
     Employee employee = modelMapper.map(newEmployeeDTO, Employee.class);
     employee.setName(utilityService.capitalizeWords(employee.getName()));
@@ -46,8 +51,12 @@ public class EmployeeService {
   }
 
   public Employee updateEmployee(Long id, CreateEmployeeDTO newEmployeeDTO) {
-    Employee existingEmployee = employeeRepository.findById(id).orElse(null);
-    Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElse(null);
+    Employee existingEmployee = employeeRepository.findById(id).orElseThrow(
+      () -> new ResourceNotFoundException("Employee not found")
+    );
+    Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElseThrow(
+      () -> new ResourceNotFoundException("Department not found")
+    );
 
     modelMapper.map(newEmployeeDTO, existingEmployee);
     existingEmployee.setName(utilityService.capitalizeWords(newEmployeeDTO.getName()));
@@ -55,7 +64,6 @@ public class EmployeeService {
 
     return employeeRepository.save(existingEmployee);
   }
-
 
   public boolean deleteEmployee(Long id) {
     Employee employee = getEmployeeById(id);
