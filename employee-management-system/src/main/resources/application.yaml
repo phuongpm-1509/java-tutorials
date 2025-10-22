@@ -1,0 +1,4 @@
+# Default config
+spring:
+  application:
+    name: employee-management-system
