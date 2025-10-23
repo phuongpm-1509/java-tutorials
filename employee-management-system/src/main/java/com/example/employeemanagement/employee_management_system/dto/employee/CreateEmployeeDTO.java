@@ -30,4 +30,17 @@ public class CreateEmployeeDTO {
   public String getEmail() {
     return email;
   }
+
+  // Setters
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setDepartmentId(Long departmentId) {
+    this.departmentId = departmentId;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }

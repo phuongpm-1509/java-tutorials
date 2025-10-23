@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>List Employee</title>
+  <th:block th:replace="~{layouts/static :: css_links}"></th:block>
+</head>
+
+<body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+  <!--begin::App Wrapper-->
+  <div class="app-wrapper">
+    <!--begin::Header-->
+    <th:block th:replace="~{layouts/header :: header}"></th:block>
+    <!--end::Header-->
+    <!--begin::Sidebar-->
+    <th:block th:replace="~{layouts/sidebar :: sidebar}"></th:block>
+    <!--end::Sidebar-->
+    <!--begin::App Main-->
+    <main class="app-main">
+      <!--begin::App Content Header-->
+      <div class="app-content-header">
+        <!--begin::Container-->
+        <div class="container-fluid">
+          <!--begin::Row-->
+          <div class="row">
+            <div class="col-sm-6">
+              <h3 class="mb-0">Table list employee</h3>
+            </div>
+          </div>
+          <!--end::Row-->
+        </div>
+        <!--end::Container-->
+      </div>
+      <!--end::App Content Header-->
+      <!--begin::App Content-->
+      <div class="app-content">
+        <!--begin::Container-->
+        <div class="container-fluid">
+          <!--begin::Row-->
+          <div class="row">
+            <div class="card mb-4">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <form th:action="@{/employees}" method="get" th:object="${params}">
+                      <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search by name" name="name"
+                          th:value="*{name}">
+                        <select class="form-select" name="departmentId">
+                          <option value="">All Departments</option>
+                          <option th:each="department : ${departments}" th:value="${department.id}"
+                            th:text="${department.name}" th:selected="${department.id == params.departmentId}"></option>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-sm-6 text-end">
+                    <a th:href="@{/employees/new}" class="btn btn-primary">Add New</a>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th style="width: 15px">ID</th>
+                      <th>Name</th>
+                      <th>Department</th>
+                      <th>Email</th>
+                      <th>Code</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="align-middle" th:each="employee : ${employees}">
+                      <td th:text="${employee.id}"></td>
+                      <td>
+                        <a th:href="@{/employees/{id}(id=${employee.id})}" th:text="${employee.name}"></a>
+                      </td>
+                      <td th:text="${employee.department.name}"></td>
+                      <td th:text="${employee.email}"></td>
+                      <td th:text="${employee.code}"></td>
+                      <td>
+                        <a th:href="@{/employees/{id}/edit(id=${employee.id})}" class="btn btn-sm btn-primary">Edit</a>
+                        <a th:href="@{/employees/{id}/delete(id=${employee.id})}"
+                          class="btn btn-sm btn-danger">Delete</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!--end::Row-->
+            <!--end::Container-->
+          </div>
+          <!--end::App Content-->
+    </main>
+    <!--end::App Main-->
+    <!--begin::Footer-->
+    <th:block th:replace="~{layouts/footer :: footer}"></th:block>
+    <!--end::Footer-->
+  </div>
+  <!--end::App Wrapper-->
+  <!--begin::Script-->
+  <!--begin::Third Party Plugin(OverlayScrollbars)-->
+  <th:block th:replace="~{layouts/static :: js_scripts}"></th:block>
+  <!--end::OverlayScrollbars Configure-->
+  <!--end::Script-->
+</body>
+
+</html>
