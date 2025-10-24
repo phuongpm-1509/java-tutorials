@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Layout Base</title>
+</head>
+<body>
+
+    <header th:fragment="header">
+        <h1>Ứng dụng Quản lý Tác giả</h1>
+        <nav>
+            <a href="/">Trang chủ</a>
+            |
+            <a href="/authors">Danh sách Tác giả</a>
+        </nav>
+        <hr/>
+    </header>
+
+    <footer th:fragment="footer(name)">
+        <hr/>
+        <p>&copy; 2025 - Ứng dụng Quản lý. Sử dụng Thymeleaf Fragments. [[${name}]]</p>
+    </footer>
+
+    <div th:fragment="scripts">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            console.log("Script từ fragment đã được tải.");
+        </script>
+    </div>
+
+</body>
+</html>
