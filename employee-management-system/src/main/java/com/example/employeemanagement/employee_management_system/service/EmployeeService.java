@@ -1,7 +1,9 @@
 package com.example.employeemanagement.employee_management_system.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 import com.example.employeemanagement.employee_management_system.annotation.Loggable;
@@ -74,5 +76,10 @@ public class EmployeeService {
 
     employeeRepository.deleteById(employee.getId());
     return true;
+  }
+
+  @Cacheable("employeeCount")
+  public Long countEmployees() {
+    return employeeRepository.count();
   }
 }
