@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <th:block th:replace="~{layouts/static :: css_links}"></th:block>
+</head>
+
+<body class="register-page bg-body-secondary">
+  <div class="register-box">
+    <div class="register-logo">
+      <a href="../index2.html"><b>Admin</b>LTE</a>
+    </div>
+    <!-- /.register-logo -->
+    <div class="card">
+      <div class="card-body register-card-body">
+        <p class="register-box-msg">Register a new user</p>
+        <form th:action="@{/register}" th:object="${user}" method="post">
+          <div class="mb-3">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Username" th:field="*{username}" />
+              <div class="input-group-text"><span class="bi bi-person"></span></div>
+            </div>
+            <div th:if="${#fields.hasErrors('username')}" class="error-detail">
+              <span th:errors="*{username}" style="color:red;"></span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="input-group">
+              <input type="password" class="form-control" placeholder="Password" th:field="*{password}" />
+              <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+            </div>
+            <div th:if="${#fields.hasErrors('password')}" class="error-detail">
+              <span th:errors="*{password}" style="color:red;"></span>
+            </div>
+          </div>
+          <!--begin::Row-->
+          <div class="row">
+            <div class="col-8">
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Register</button>
+              </div>
+            </div>
+            <!-- /.col -->
+          </div>
+          <!--end::Row-->
+        </form>
+        <!-- /.social-auth-links -->
+        <p class="mb-0">
+          <a th:href="@{/login}" class="text-center"> I already have a user </a>
+        </p>
+      </div>
+      <!-- /.register-card-body -->
+    </div>
+  </div>
+  <!-- /.register-box -->
+  <!--begin::Third Party Plugin(OverlayScrollbars)-->
+  <th:block th:replace="~{layouts/static :: js_scripts}"></th:block>
+  <!--end::OverlayScrollbars Configure-->
+  <!--end::Script-->
+</body>
+
+</html>
