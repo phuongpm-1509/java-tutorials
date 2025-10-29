@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,7 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class LoggingAspect {
 
   private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
-  private final ObjectMapper objectMapper = new ObjectMapper();
+
+  @Autowired
+  private ObjectMapper objectMapper;
+
 
   @AfterReturning(pointcut = "@annotation(com.example.employeemanagement.employee_management_system.annotation.Loggable)",
                   returning = "result")

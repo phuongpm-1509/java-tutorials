@@ -21,8 +21,10 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http
           .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/css/**", "/js/**", "/public/**", "/images/**").permitAll()
               .requestMatchers("/actuator/**").permitAll()
               .requestMatchers("/api/**").permitAll()  // TODO: Implement module 9
+              .requestMatchers("/employees/**").permitAll()
               .anyRequest().authenticated()
           )
           .csrf(csrf -> csrf.disable());

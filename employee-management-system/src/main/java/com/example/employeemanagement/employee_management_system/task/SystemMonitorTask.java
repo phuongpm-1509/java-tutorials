@@ -12,6 +12,5 @@ public class SystemMonitorTask {
   @Scheduled(fixedRate = 10000)
   public void monitorSystemHealth() {
     logger.info("System running");
-    System.out.println("System running");
   }
 }
