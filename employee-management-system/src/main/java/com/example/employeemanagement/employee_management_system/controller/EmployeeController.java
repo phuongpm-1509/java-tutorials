@@ -47,19 +47,15 @@ public class EmployeeController {
   public String listEmployee(
     @RequestParam(required = false) String name,
     @RequestParam(required = false) Long departmentId,
-    Authentication authentication,
     Model model
   ) {
     SearchEmployeeDTO params = new SearchEmployeeDTO(name, departmentId);
     List<Department> departments = departmentService.getAllDepartments();
     List<Employee> employees = employeeService.getAllEmployees(name, departmentId);
-    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
     model.addAttribute("departments", departments);
     model.addAttribute("employees", employees);
     model.addAttribute("params", params);
-    model.addAttribute("currentUser", authentication.getName());
-    model.addAttribute("userAuthorities", authorities);
 
     return "employees/index";
   }

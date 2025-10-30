@@ -17,12 +17,12 @@
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in</p>
 
-        <!-- Hiển thị lỗi login -->
+        <!-- Show error login -->
         <div th:if="${param.error}" class="alert alert-danger" role="alert">
           Invalid username or password
         </div>
 
-        <!-- Hiển thị thông báo logout -->
+        <!-- Show info logout success -->
         <div th:if="${param.logout}" class="alert alert-success" role="alert">
           You have been logged out successfully
         </div>

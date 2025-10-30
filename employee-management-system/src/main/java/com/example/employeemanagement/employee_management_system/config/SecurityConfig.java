@@ -30,8 +30,9 @@ public class SecurityConfig {
               .requestMatchers("/api/**").permitAll()  // TODO: Implement module 9
               .requestMatchers("/actuator/**").hasRole("ADMIN")
               .requestMatchers("/employees").hasAnyRole("USER", "ADMIN")
-              .requestMatchers("/employees/new").hasAnyRole("ADMIN")
-              .requestMatchers("/employees/{id}/edit").hasAnyRole("ADMIN")
+              .requestMatchers("/employees/new").hasRole("ADMIN")
+              .requestMatchers("/employees/{id}/edit").hasRole("ADMIN")
+              .requestMatchers("/statistics").hasRole("ADMIN")
               .anyRequest().authenticated()
           )
           .formLogin(form -> form
