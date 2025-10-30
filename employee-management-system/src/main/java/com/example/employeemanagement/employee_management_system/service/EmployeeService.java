@@ -1,9 +1,12 @@
 package com.example.employeemanagement.employee_management_system.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+import com.example.employeemanagement.employee_management_system.annotation.Loggable;
 import com.example.employeemanagement.employee_management_system.dto.employee.CreateEmployeeDTO;
 import com.example.employeemanagement.employee_management_system.exception.ResourceNotFoundException;
 import com.example.employeemanagement.employee_management_system.model.Department;
@@ -35,6 +38,7 @@ public class EmployeeService {
     );
   }
 
+  @Loggable
   public Employee createEmployee(CreateEmployeeDTO newEmployeeDTO) {
     Department department = departmentRepository.findById(newEmployeeDTO.getDepartmentId()).orElseThrow(
       () -> new ResourceNotFoundException("Department not found")
@@ -50,6 +54,7 @@ public class EmployeeService {
     return employeeRepository.save(savedEmployee);
   }
 
+  @Loggable
   public Employee updateEmployee(Long id, CreateEmployeeDTO newEmployeeDTO) {
     Employee existingEmployee = employeeRepository.findById(id).orElseThrow(
       () -> new ResourceNotFoundException("Employee not found")
@@ -65,10 +70,16 @@ public class EmployeeService {
     return employeeRepository.save(existingEmployee);
   }
 
+  @Loggable
   public boolean deleteEmployee(Long id) {
     Employee employee = getEmployeeById(id);
 
     employeeRepository.deleteById(employee.getId());
     return true;
+  }
+
+  @Cacheable("employeeCount")
+  public Long countEmployees() {
+    return employeeRepository.count();
   }
 }

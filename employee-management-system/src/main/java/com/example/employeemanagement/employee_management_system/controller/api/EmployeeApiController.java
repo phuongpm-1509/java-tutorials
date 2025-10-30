@@ -15,6 +15,7 @@ import com.example.employeemanagement.employee_management_system.service.Employe
 import jakarta.validation.Valid;
 
 import com.example.employeemanagement.employee_management_system.dto.employee.CreateEmployeeDTO;
+import com.example.employeemanagement.employee_management_system.dto.employee.EmployeeCount;
 import com.example.employeemanagement.employee_management_system.model.Employee;
 import java.util.List;
 
@@ -71,5 +72,11 @@ public class EmployeeApiController {
     Long id
   ) {
     return employeeService.deleteEmployee(id);
+  }
+
+  @GetMapping("/count")
+  public EmployeeCount countEmployee() {
+    long total = employeeService.countEmployees();
+    return new EmployeeCount(total);
   }
 }
