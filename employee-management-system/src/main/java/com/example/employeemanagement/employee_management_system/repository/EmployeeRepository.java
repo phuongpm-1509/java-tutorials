@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.example.employeemanagement.employee_management_system.dto.employee.DepartmentEmployeeCountDTO;
 import com.example.employeemanagement.employee_management_system.model.Employee;
 
+
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
   @Query("SELECT e FROM Employee e WHERE " +
@@ -21,14 +22,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
       @Param("departmentId") Long departmentId
   );
 
-  @Query(value = "SELECT d.id AS department_id, d.name AS department_name, COUNT(e.id) AS total_count " +
+  @Query("SELECT d.id AS departmentId, d.name AS departmentName, COUNT(e.id) AS totalCount " +
           "FROM " +
-              "departments d " +
+              "Department d " +
           "LEFT JOIN " +
-              "employees e ON e.department_id = d.id " +
+              "d.employees e " +
           "GROUP BY " +
               "d.id, d.name " +
           "ORDER BY " +
-              "d.id", nativeQuery = true)
+              "d.id")
   List<DepartmentEmployeeCountDTO> getStatisticsEmployeeCount();
 }

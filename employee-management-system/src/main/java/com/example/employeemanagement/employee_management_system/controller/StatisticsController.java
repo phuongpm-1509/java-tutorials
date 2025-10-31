@@ -12,6 +12,7 @@ import com.example.employeemanagement.employee_management_system.service.Statist
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import com.example.employeemanagement.employee_management_system.constaints.UIConstants;
 
 @Controller
 @RequestMapping("/statistics")
@@ -27,13 +28,9 @@ public class StatisticsController {
   @PreAuthorize("hasRole('ADMIN')")
   public String statistics(Model model) {
     StatisticsEmployeeDTO statistics = statisticsService.statistics();
-    List<String> bgColors = List.of(
-        "bg-primary", "bg-secondary", "bg-success", "bg-danger",
-        "bg-warning", "bg-info", "bg-light", "bg-dark", "bg-white"
-    );
 
     model.addAttribute("statistics", statistics);
-    model.addAttribute("bgColors", bgColors);
+    model.addAttribute("bgColors", UIConstants.BG_COLORS);
 
     return "statistics/index";
   }
