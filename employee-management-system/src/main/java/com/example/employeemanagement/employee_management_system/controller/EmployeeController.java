@@ -16,9 +16,14 @@ import jakarta.validation.Valid;
 import com.example.employeemanagement.employee_management_system.dto.employee.CreateEmployeeDTO;
 import com.example.employeemanagement.employee_management_system.dto.employee.SearchEmployeeDTO;
 import com.example.employeemanagement.employee_management_system.model.Employee;
+
+import java.util.Collection;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.example.employeemanagement.employee_management_system.model.Department;
@@ -38,6 +43,7 @@ public class EmployeeController {
   }
 
   @GetMapping
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
   public String listEmployee(
     @RequestParam(required = false) String name,
     @RequestParam(required = false) Long departmentId,
@@ -46,6 +52,7 @@ public class EmployeeController {
     SearchEmployeeDTO params = new SearchEmployeeDTO(name, departmentId);
     List<Department> departments = departmentService.getAllDepartments();
     List<Employee> employees = employeeService.getAllEmployees(name, departmentId);
+
     model.addAttribute("departments", departments);
     model.addAttribute("employees", employees);
     model.addAttribute("params", params);
@@ -54,6 +61,7 @@ public class EmployeeController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
   public String getEmployee(
     @PathVariable
     Long id,
@@ -65,6 +73,7 @@ public class EmployeeController {
   }
 
   @GetMapping("/new")
+  @PreAuthorize("hasRole('ADMIN')")
   public String newEmployee(Model model) {
     List<Department> departments = departmentService.getAllDepartments();
     model.addAttribute("departments", departments);
@@ -73,6 +82,7 @@ public class EmployeeController {
   }
 
   @PostMapping("/new")
+  @PreAuthorize("hasRole('ADMIN')")
   public String createEmployee(
     @Valid
     @ModelAttribute("employee")
@@ -91,6 +101,7 @@ public class EmployeeController {
   }
 
   @GetMapping("/{id}/edit")
+  @PreAuthorize("hasRole('ADMIN')")
   public String editEmployee(Model model, @PathVariable Long id) {
     List<Department> departments = departmentService.getAllDepartments();
     Employee employee = employeeService.getEmployeeById(id);
@@ -105,6 +116,7 @@ public class EmployeeController {
   }
 
   @PostMapping("/{id}/edit")
+  @PreAuthorize("hasRole('ADMIN')")
   public String updateEmployee(
     @PathVariable
     Long id,
@@ -127,6 +139,7 @@ public class EmployeeController {
   }
 
   @GetMapping("{id}/delete")
+  @PreAuthorize("hasRole('ADMIN')")
   public String deleteEmployee(
     @PathVariable
     Long id

@@ -1,0 +1,15 @@
+package com.example.employeemanagement.employee_management_system.repository;
+
+import org.springframework.stereotype.Repository;
+
+import com.example.employeemanagement.employee_management_system.model.User;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+  Optional<User> findByUsername(String username);
+  boolean existsByUsernameContainingIgnoreCase(String username);
+}
